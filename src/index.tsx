@@ -87,6 +87,7 @@ const StepIndicator = ({
   onPress,
   renderStepIndicator: renderCustomStepIndicator,
   renderLabel,
+  setRef
 }: StepIndicatorProps) => {
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -249,18 +250,25 @@ const StepIndicator = ({
     if (!labels || labels.length === 0) {
       return;
     }
-    var labelViews = labels.map((label, index) => {
+    var labelViews = labels.map((labelValue, index) => {
+      const isLabelObject = typeof labelValue === 'object';
+      const label = isLabelObject ? labelValue.label : labelValue;
       const selectedStepLabelStyle =
         index === currentPosition
-          ? { color: customStyles.currentStepLabelColor }
-          : { color: customStyles.labelColor };
+          ? {color: customStyles.currentStepLabelColor}
+          : {color: customStyles.labelColor};
       return (
         <TouchableWithoutFeedback
           style={styles.stepLabelItem}
           key={index}
-          onPress={() => stepPressed(index)}
-        >
-          <View style={styles.stepLabelItem}>
+          onPress={() => stepPressed(index)}>
+          <View
+            style={styles.stepLabelItem}
+            ref={r =>
+              setRef
+                ? setRef(r, isLabelObject ? label.keyName : index.toString())
+                : {}
+            }>
             {renderLabel ? (
               renderLabel({
                 position: index,
@@ -277,8 +285,7 @@ const StepIndicator = ({
                     fontSize: customStyles.labelSize,
                     fontFamily: customStyles.labelFontFamily,
                   },
-                ]}
-              >
+                ]}>
                 {label}
               </Text>
             )}
@@ -292,11 +299,10 @@ const StepIndicator = ({
         style={[
           styles.stepLabelsContainer,
           direction === 'vertical'
-            ? { flexDirection: 'column', paddingHorizontal: 4 }
-            : { flexDirection: 'row', paddingVertical: 4 },
-          { alignItems: customStyles.labelAlign },
-        ]}
-      >
+            ? {flexDirection: 'column', paddingHorizontal: 4}
+            : {flexDirection: 'row', paddingVertical: 4},
+          {alignItems: customStyles.labelAlign},
+        ]}>
         {labelViews}
       </View>
     );
