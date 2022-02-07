@@ -266,7 +266,7 @@ const StepIndicator = ({
             style={styles.stepLabelItem}
             ref={r =>
               setRef
-                ? setRef(r, isLabelObject ? label.keyName : index.toString())
+                ? setRef(r, isLabelObject ? labelValue.keyName : index.toString())
                 : {}
             }>
             {renderLabel ? (
@@ -403,18 +403,18 @@ const StepIndicator = ({
     Animated.sequence([
       Animated.timing(progressAnim, {
         toValue: isNaN(animateToPosition) ? 0 : animateToPosition,
-        duration: 200,
+        duration: 500,
         useNativeDriver: false,
       }),
       Animated.parallel([
         Animated.timing(sizeAnim, {
           toValue: customStyles.currentStepIndicatorSize,
-          duration: 100,
+          duration: 400,
           useNativeDriver: false,
         }),
         Animated.timing(borderRadiusAnim, {
           toValue: customStyles.currentStepIndicatorSize / 2,
-          duration: 100,
+          duration: 400,
           useNativeDriver: false,
         }),
       ]),
