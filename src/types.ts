@@ -281,7 +281,7 @@ export interface StepIndicatorProps {
    * @type {string[]}
    * @memberof StepIndicatorProps
    */
-  labels?: string[];
+  labels?: string[] | {label : string; keyName : string}[];
 
   /**
    * Callback fired when tapping on a step
@@ -321,6 +321,12 @@ export interface StepIndicatorProps {
     label: string;
     currentPosition: number;
   }): React.ReactNode;
+  
+  /**
+   * Set ref with custom key
+   *
+   */
+  setRef?:(ref : any, keyName : string)=>void;
 }
 
 export default class StepIndicator extends React.Component<
